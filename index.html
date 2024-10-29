@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Promotion Management System</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+        .sidebar {
+            min-height: 100vh;
+            background-color: #fff;
+            border-right: 1px solid #e0e0e0;
+        }
+        .nav-link.active {
+            background-color: #e9ecef;
+            font-weight: bold;
+        }
+        .submenu .nav-link {
+            padding-left: 2rem;
+            font-size: 0.95rem;
+        }
+        .card-header {
+            background-color: #fff;
+            border-bottom: none;
+        }
+        .export-btn {
+            float: right;
+        }
+        .filter-select {
+            max-width: 200px;
+        }
+        .table-responsive {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .btn-custom {
+            background-color: #0d6efd;
+            color: #fff;
+        }
+        .btn-custom:hover {
+            background-color: #0b5ed7;
+            color: #fff;
+        }
+        .section-title {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div class="sidebar p-3">
+            <h4 class="mb-4">Promotion Management</h4>
+            <ul class="nav flex-column">
+                <!-- Dashboard Link -->
+                <li class="nav-item mb-2">
+                    <a class="nav-link active" href="#dashboard" data-bs-toggle="tab">
+                        <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                    </a>
+                </li>
+                <!-- Coupon/Voucher Management -->
+                <li class="nav-item mb-2">
+                    <a class="nav-link" href="#coupon" data-bs-toggle="tab">
+                        <i class="fas fa-tags me-2"></i> Coupon/Voucher Management
+                    </a>
+                    <ul class="nav flex-column submenu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#coupon-types" data-bs-toggle="tab">
+                                <i class="fas fa-certificate me-2"></i> Coupon Types
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#issue-conditions" data-bs-toggle="tab">
+                                <i class="fas fa-clipboard-list me-2"></i> Issue Conditions
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#usage-history" data-bs-toggle="tab">
+                                <i class="fas fa-history me-2"></i> Usage History
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Campaign Management -->
+                <li class="nav-item mb-2">
+                    <a class="nav-link" href="#campaign" data-bs-toggle="tab">
+                        <i class="fas fa-bullhorn me-2"></i> Campaign Management
+                    </a>
+                    <ul class="nav flex-column submenu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#regular-campaigns" data-bs-toggle="tab">
+                                <i class="fas fa-calendar-alt me-2"></i> Regular Campaigns
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#special-promotions" data-bs-toggle="tab">
+                                <i class="fas fa-fire me-2"></i> Special Promotions
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Reward Program -->
+                <li class="nav-item mb-2">
+                    <a class="nav-link" href="#reward" data-bs-toggle="tab">
+                        <i class="fas fa-gift me-2"></i> Reward Program
+                    </a>
+                    <ul class="nav flex-column submenu">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#point-rules" data-bs-toggle="tab">
+                                <i class="fas fa-coins me-2"></i> Point Accrual Rules
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- Main Content -->
+        <div class="flex-grow-1 p-4">
+            <div class="tab-content">
+                <!-- Dashboard Tab -->
+                <div class="tab-pane fade show active" id="dashboard">
+                    <h3 class="section-title">Dashboard</h3>
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="card text-white bg-primary mb-3">
+                                <div class="card-header"><i class="fas fa-tags me-2"></i> Active Coupons</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">1,245</h5>
+                                    <p class="card-text">Currently active coupons.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-white bg-success mb-3">
+                                <div class="card-header"><i class="fas fa-bullhorn me-2"></i> Ongoing Campaigns</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">12</h5>
+                                    <p class="card-text">Active marketing campaigns.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-white bg-warning mb-3">
+                                <div class="card-header"><i class="fas fa-gift me-2"></i> Reward Points Issued</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">5,678</h5>
+                                    <p class="card-text">Total points issued to customers.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Analytics Charts -->
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i> Promotions Performance</h5>
+                                    <button class="btn btn-sm btn-custom"><i class="fas fa-download me-1"></i> Export Data</button>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="promotionsPerformanceChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0"><i class="fas fa-users me-2"></i> User Engagement</h5>
+                                    <button class="btn btn-sm btn-custom"><i class="fas fa-download me-1"></i> Export Data</button>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="userEngagementChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0"><i class="fas fa-coins me-2"></i> Point Accrual Statistics</h5>
+                                    <button class="btn btn-sm btn-custom"><i class="fas fa-download me-1"></i> Export Data</button>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="pointAccrualChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Coupon/Voucher Management Tab -->
+                <div class="tab-pane fade" id="coupon">
+                    <!-- Coupon Types Sub-Tab -->
+                    <div class="tab-pane fade" id="coupon-types">
+                        <h3 class="section-title">Coupon Types</h3>
+                        <div class="card mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-certificate me-2"></i> Configure Coupon Types</h5>
+                                <button class="btn btn-sm btn-custom"><i class="fas fa-plus me-1"></i> Add New</button>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                            <th>Multiple Use</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Fixed Discount</td>
+                                            <td>Get $10 off your purchase.</td>
+                                            <td>Yes</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Percentage Discount</td>
+                                            <td>Get 20% off your purchase.</td>
+                                            <td>No</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Free Shipping</td>
+                                            <td>Free shipping on orders over $50.</td>
+                                            <td>Yes</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Issue Conditions Sub-Tab -->
+                    <div class="tab-pane fade" id="issue-conditions">
+                        <h3 class="section-title">Issue Conditions</h3>
+                        <div class="card mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-clipboard-list me-2"></i> Configure Issue Conditions</h5>
+                                <button class="btn btn-sm btn-custom"><i class="fas fa-plus me-1"></i> Add Condition</button>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Issuance Method</label>
+                                            <select class="form-select">
+                                                <option selected>Automatic</option>
+                                                <option value="1">Manual</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Limit per Coupon Type</label>
+                                            <input type="number" class="form-control" placeholder="e.g., 100">
+                                        </div>
+                                        <div class="col-md-4 d-flex align-items-end">
+                                            <button type="submit" class="btn btn-primary">Save Settings</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <h6>Current Settings:</h6>
+                                <ul>
+                                    <li>Automatic Issuance: Enabled</li>
+                                    <li>Manual Issuance: Enabled</li>
+                                    <li>Limit per Coupon Type: 100</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Usage History Sub-Tab -->
+                    <div class="tab-pane fade" id="usage-history">
+                        <h3 class="section-title">Usage History</h3>
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-history me-2"></i> Coupon Usage History</h5>
+                                <button class="btn btn-sm btn-custom"><i class="fas fa-download me-1"></i> Export Data</button>
+                            </div>
+                            <div class="card-body table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Coupon Code</th>
+                                            <th>Status</th>
+                                            <th>Expiration Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>DISC10</td>
+                                            <td><span class="badge bg-success">Used</span></td>
+                                            <td>2024-12-31</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-warning"><i class="fas fa-redo"></i> Reissue</button>
+                                                <button class="btn btn-sm btn-info"><i class="fas fa-calendar-plus"></i> Extend</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>SHIPFREE</td>
+                                            <td><span class="badge bg-danger">Unused</span></td>
+                                            <td>2024-11-30</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-warning"><i class="fas fa-redo"></i> Reissue</button>
+                                                <button class="btn btn-sm btn-info"><i class="fas fa-calendar-plus"></i> Extend</button>
+                                            </td>
+                                        </tr>
+                                        <!-- Add more rows as needed -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Campaign Management Tab -->
+                <div class="tab-pane fade" id="campaign">
+                    <!-- Regular Campaigns Sub-Tab -->
+                    <div class="tab-pane fade" id="regular-campaigns">
+                        <h3 class="section-title">Regular Campaigns</h3>
+                        <div class="card mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i> Manage Regular Campaigns</h5>
+                                <button class="btn btn-sm btn-custom"><i class="fas fa-plus me-1"></i> Create New</button>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Campaign Name</th>
+                                            <th>Type</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Birthday Special</td>
+                                            <td>Birthday</td>
+                                            <td><span class="badge bg-success">Active</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Summer Sale</td>
+                                            <td>Seasonal</td>
+                                            <td><span class="badge bg-warning">Upcoming</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <!-- Add more rows as needed -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Special Promotions Sub-Tab -->
+                    <div class="tab-pane fade" id="special-promotions">
+                        <h3 class="section-title">Special Promotions</h3>
+                        <div class="card mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-fire me-2"></i> Manage Special Promotions</h5>
+                                <button class="btn btn-sm btn-custom"><i class="fas fa-plus me-1"></i> Create New</button>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Promotion Name</th>
+                                            <th>Type</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Flash Sale - Black Friday</td>
+                                            <td>Flash Sale</td>
+                                            <td><span class="badge bg-success">Active</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>VIP Exclusive Offer</td>
+                                            <td>VIP Exclusive</td>
+                                            <td><span class="badge bg-secondary">Inactive</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-sm btn-success"><i class="fas fa-play"></i></button>
+                                            </td>
+                                        </tr>
+                                        <!-- Add more rows as needed -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Reward Program Tab -->
+                <div class="tab-pane fade" id="reward">
+                    <!-- Point Accrual Rules Sub-Tab -->
+                    <div class="tab-pane fade" id="point-rules">
+                        <h3 class="section-title">Point Accrual Rules</h3>
+                        <div class="card mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-coins me-2"></i> Configure Point Accrual</h5>
+                                <button class="btn btn-sm btn-custom"><i class="fas fa-plus me-1"></i> Add Rule</button>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Action</label>
+                                            <select class="form-select">
+                                                <option selected>Purchase</option>
+                                                <option value="1">Event Participation</option>
+                                                <option value="2">Referral</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Points Earned</label>
+                                            <input type="number" class="form-control" placeholder="e.g., 10">
+                                        </div>
+                                        <div class="col-md-4 d-flex align-items-end">
+                                            <button type="submit" class="btn btn-primary">Save Rule</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <h6>Current Point Rules:</h6>
+                                <ul>
+                                    <li>Purchase: 10 points per $1 spent.</li>
+                                    <li>Event Participation: 50 points per event.</li>
+                                    <li>Referral: 100 points per successful referral.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Point Accrual Statistics Table -->
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i> Point Accrual Statistics</h5>
+                                <button class="btn btn-sm btn-custom"><i class="fas fa-download me-1"></i> Export Data</button>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="pointAccrualStatsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Additional Sub-Tabs Content -->
+                <!-- For demonstration, other sub-tabs content is nested within their parent tabs -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js Initialization -->
+    <script>
+        // Dashboard Charts
+        // Promotions Performance Chart
+        const promotionsCtx = document.getElementById('promotionsPerformanceChart').getContext('2d');
+        const promotionsPerformanceChart = new Chart(promotionsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Active Coupons', 'Ongoing Campaigns', 'Reward Points'],
+                datasets: [{
+                    label: 'Number of Interactions',
+                    data: [1245, 12, 5678],
+                    backgroundColor: ['#0d6efd', '#198754', '#ffc107'],
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: true }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // User Engagement Chart
+        const engagementCtx = document.getElementById('userEngagementChart').getContext('2d');
+        const userEngagementChart = new Chart(engagementCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                datasets: [{
+                    label: 'Engagement Rate (%)',
+                    data: [20, 25, 30, 28, 35, 40, 38],
+                    borderColor: '#dc3545',
+                    backgroundColor: 'rgba(220, 53, 69, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true },
+                    tooltip: { enabled: true }
+                },
+                scales: {
+                    y: { beginAtZero: true, max: 50 }
+                }
+            }
+        });
+
+        // Point Accrual Statistics Chart
+        const pointCtx = document.getElementById('pointAccrualChart').getContext('2d');
+        const pointAccrualChart = new Chart(pointCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Purchase', 'Event Participation', 'Referral'],
+                datasets: [{
+                    data: [5678, 1500, 2300],
+                    backgroundColor: ['#198754', '#0d6efd', '#6f42c1'],
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: { enabled: true }
+                }
+            }
+        });
+
+        // Point Accrual Statistics Table Chart
+        const pointStatsCtx = document.getElementById('pointAccrualStatsChart').getContext('2d');
+        const pointAccrualStatsChart = new Chart(pointStatsCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Purchase', 'Event Participation', 'Referral'],
+                datasets: [{
+                    data: [6000, 2000, 3000],
+                    backgroundColor: ['#198754', '#0d6efd', '#6f42c1'],
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: { enabled: true }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
